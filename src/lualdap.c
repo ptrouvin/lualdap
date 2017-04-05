@@ -939,9 +939,9 @@ static int lualdap_open_simple (lua_State *L) {
 	ldap_pchar_t who = (ldap_pchar_t) luaL_optstring (L, 2, NULL);
 	const char *password = luaL_optstring (L, 3, NULL);
 	int use_tls = lua_toboolean (L, 4);
-	lua_Integer lport = lua_tointegerx(L, 5);
+	lua_Integer lport = luaL_checkinteger(L, 5);
 	int port = LDAP_PORT;
-	if( lport>=INT_MIN && lport<=INT_MAX && lport )
+	if( lport>0 && lport<65535 )
 		port=lport;
 	conn_data *conn = (conn_data *)lua_newuserdata (L, sizeof(conn_data));
 	int err;
