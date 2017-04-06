@@ -86,7 +86,6 @@ typedef struct {
 } attrs_data;
 
 int debugLevel = 0; /* 0=disabled, 1... */
-#define debug(l,msg) (if(debugLevel>=l)puts(msg);)
 
 int luaopen_lualdap (lua_State *L);
 
@@ -961,9 +960,9 @@ static int lualdap_open_simple (lua_State *L) {
 	conn_data *conn = (conn_data *)lua_newuserdata (L, sizeof(conn_data));
 	int err;
 	
-	char buf[1024];
-	sprintf(buf,"lualdap_open_simple: host(%s:%d) user(%s)\n",host,port,who)
-	debug(1,buf);
+	if(debugLevel>=l){
+		printf("lualdap_open_simple: host(%s:%d) user(%s)\n",host,port,who);
+	}
 
 	/* Initialize */
 	lualdap_setmeta (L, LUALDAP_CONNECTION_METATABLE);
