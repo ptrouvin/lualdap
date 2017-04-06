@@ -85,9 +85,10 @@ typedef struct {
 	int        bi;
 } attrs_data;
 
+int debugLevel = 0; /* 0=disabled, 1... */
+#define debug(l,msg) (if(debugLevel>=l)puts(msg);)
 
 int luaopen_lualdap (lua_State *L);
-
 
 /*
 ** Typical error situation.
@@ -137,6 +138,19 @@ static int option_error (lua_State *L, const char *name, const char *type) {
 	return luaL_error (L, LUALDAP_PREFIX"invalid value on option `%s': %s expected, got %s", name, type, lua_typename (L, lua_type (L, -1)));
 }
 
+
+/*
+ * setDebugLevel
+ */
+static int setDebugLevel(lua_State *L) {
+	lua_Number lvl= luaL_checknumber(L,1);
+	if( lvl<0 || lvl>255){
+		return option_error(L, "port", "integer");
+	}
+	debugLevel=lvl;
+	lua_pushnumber(L,1);
+	return 1;
+}
 
 /*
 ** Get the field called name of the table at position 2.
@@ -880,6 +894,7 @@ static int lualdap_createmeta (lua_State *L) {
 		{"modify", lualdap_modify},
 		{"rename", lualdap_rename},
 		{"search", lualdap_search},
+		{"setdebug", setDebugLevel},
 		{NULL, NULL}
 	};
 
@@ -945,6 +960,10 @@ static int lualdap_open_simple (lua_State *L) {
 		port=lport;
 	conn_data *conn = (conn_data *)lua_newuserdata (L, sizeof(conn_data));
 	int err;
+	
+	char buf[1024];
+	sprintf(buf,"lualdap_open_simple: host(%s:%d) user(%s)\n",host,port,who)
+	debug(1,buf);
 
 	/* Initialize */
 	lualdap_setmeta (L, LUALDAP_CONNECTION_METATABLE);
