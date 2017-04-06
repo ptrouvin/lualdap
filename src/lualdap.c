@@ -960,7 +960,7 @@ static int lualdap_open_simple (lua_State *L) {
 	conn_data *conn = (conn_data *)lua_newuserdata (L, sizeof(conn_data));
 	int err;
 	
-	if(debugLevel>=l){
+	if(debugLevel>=1){
 		printf("lualdap_open_simple: host(%s:%d) user(%s)\n",host,port,who);
 	}
 
