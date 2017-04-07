@@ -885,7 +885,7 @@ static int lualdap_search_tostring (lua_State *L) {
 ** Create a metatable.
 */
 static int lualdap_createmeta (lua_State *L) {
-	const luaL_reg methods[] = {
+	static const struct luaL_Reg methods[] = {
 		{"close", lualdap_close},
 		{"add", lualdap_add},
 		{"compare", lualdap_compare},
@@ -1010,7 +1010,7 @@ static void set_info (lua_State *L) {
 ** Create ldap table and register the open method.
 */
 int luaopen_lualdap (lua_State *L) {
-	struct luaL_reg lualdap[] = {
+	static const struct luaL_Reg lualdap[] = {
 		{"open_simple", lualdap_open_simple},
 		{NULL, NULL},
 	};

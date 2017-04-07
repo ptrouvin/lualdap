@@ -6,7 +6,7 @@ LUA_INC= /usr/local/include
 # OpenLDAP includes directory
 OPENLDAP_INC= /usr/local/include
 # OpenLDAP library (an optional directory can be specified with -L<dir>)
-OPENLDAP_LIB= -lldap
+OPENLDAP_LIB= -lldap -llua
 
 # OS dependent
 LIB_OPTION= -shared #for Linux
